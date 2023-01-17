@@ -58,6 +58,7 @@ sel(1, ".export").addEventListener("click", () => {
     page_temp.innerHTML = page.innerHTML;
     page_temp.querySelectorAll("[data-active]").forEach((item) => item.removeAttribute("data-active"));
     page_temp.querySelectorAll("[data-name]").forEach((item) => item.removeAttribute("data-name"));
+    page_temp.querySelectorAll("[style]").forEach((item) => item.removeAttribute("style"));
     let page_html = page_temp.innerHTML;
     sel(1, "#export_html").value = page_html;
 
