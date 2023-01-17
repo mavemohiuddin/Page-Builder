@@ -26,22 +26,22 @@
             <div class="elem_opener">X</div>
             <h2 class="panel_heading control_text" data-heading="elements">Elements</h2>
             <div class="panel_elems" data-content="elements">
-                <p class="panel_elem control_text">Section</p>
-                <p class="panel_elem control_text">Tabs</p>
-                <p class="panel_elem control_text">Accordions</p>
-                <p class="panel_elem control_text">Slideshow</p>
+                <p class="panel_elem control_text" data-element="div">Section</p>
+                <p class="panel_elem control_text" data-element="div">Tabs</p>
+                <p class="panel_elem control_text" data-element="div">Accordions</p>
+                <p class="panel_elem control_text" data-element="div">Slideshow</p>
             </div>
             <h2 class="panel_heading control_text" data-heading="texts">Texts</h2>
             <div class="panel_elems" data-content="texts">
-                <p class="panel_elem control_text">heading</p>
-                <p class="panel_elem control_text">paragraph</p>
-                <p class="panel_elem control_text">button</p>
+                <p class="panel_elem control_text" data-element="p">heading</p>
+                <p class="panel_elem control_text" data-element="p">paragraph</p>
+                <p class="panel_elem control_text" data-element="p">button</p>
             </div>
             <h2 class="panel_heading control_text" data-heading="media">Media</h2>
             <div class="panel_elems" data-content="media">
-                <p class="panel_elem control_text">image</p>
-                <p class="panel_elem control_text">icon</p>
-                <p class="panel_elem control_text">video</p>
+                <p class="panel_elem control_text" data-element="img">image</p>
+                <p class="panel_elem control_text" data-element="img">icon</p>
+                <p class="panel_elem control_text" data-element="img">video</p>
             </div>
         </div>
 
@@ -55,34 +55,56 @@
             </div>
         </div>
 
-        <div class="page"></div>
+        <div class="page" data-active="true"></div>
         <div class="page_temp display_none"></div>
 
         <div class="edit_panel close_edit">
             <div class="edit_opener">X</div>
-            <p class="control_text">Padding:</p>
-            <div data-unit="px" class="flex center_al center_js wrap gap10 style_container">
-                <div class="test_box visually_hidden"></div>
-                <div class="test_box flex"><input data-name="padding-top" type="number" placeholder="0"></div>
-                <div class="test_box visually_hidden"></div>
-                <div class="test_box flex"><input data-name="padding-left" type="number" placeholder="0"></div>
-                <div class="test_box"><p data-type="unit" data-role="switch" class="flex center_al center_js">px</p></div>
-                <div class="test_box flex"><input data-name="padding-right" type="number" placeholder="0"></div>
-                <div class="test_box visually_hidden"></div>
-                <div class="test_box flex"><input data-name="padding-bottom" type="number" placeholder="0"></div>
-                <div class="test_box visually_hidden"></div>
+            <p class="control_text edit_tab_heading" data-heading="content">Content</p>
+            <p class="control_text edit_tab_heading" data-heading="styles">Styles</p>
+            <div class="" data-content="content">
+                <div data-input-type="text">
+                    <p class="control_text">Text:</p>
+                    <div class="flex center_al center_js wrap gap10 style_container">
+                        <div class="input_box_large flex"><textarea data-name="text_content" type="text"></textarea></div>
+                    </div>
+                </div>
+                <div data-input-type="item_name">
+                    <p class="control_text">Container Name:</p>
+                    <div class="flex center_al center_js wrap gap10 style_container">
+                        <div class="input_box_large flex"><input data-name="elemenet_name" type="text"></div>
+                    </div>
+                </div>
             </div>
-            <p class="control_text">Margin:</p>
-            <div data-unit="px" class="flex center_al center_js wrap gap10 style_container">
-                <div class="test_box visually_hidden"></div>
-                <div class="test_box flex"><input data-name="margin-top" type="number" placeholder="0"></div>
-                <div class="test_box visually_hidden"></div>
-                <div class="test_box flex"><input data-name="margin-left" type="number" placeholder="0"></div>
-                <div class="test_box"><p data-type="unit" data-role="switch" class="flex center_al center_js">px</p></div>
-                <div class="test_box flex"><input data-name="margin-right" type="number" placeholder="0"></div>
-                <div class="test_box visually_hidden"></div>
-                <div class="test_box flex"><input data-name="margin-bottom" type="number" placeholder="0"></div>
-                <div class="test_box visually_hidden"></div>
+            <div class="display_none" data-content="styles">
+                <div data-input-type="padding">
+                    <p class="control_text">Padding:</p>
+                    <div data-unit="px" class="flex center_al center_js wrap gap10 style_container">
+                        <div class="input_box_small visually_hidden"></div>
+                        <div class="input_box_small flex"><input data-name="padding-top" type="number" placeholder="0"></div>
+                        <div class="input_box_small visually_hidden"></div>
+                        <div class="input_box_small flex"><input data-name="padding-left" type="number" placeholder="0"></div>
+                        <div class="input_box_small"><p data-type="unit" data-role="switch" class="flex center_al center_js">px</p></div>
+                        <div class="input_box_small flex"><input data-name="padding-right" type="number" placeholder="0"></div>
+                        <div class="input_box_small visually_hidden"></div>
+                        <div class="input_box_small flex"><input data-name="padding-bottom" type="number" placeholder="0"></div>
+                        <div class="input_box_small visually_hidden"></div>
+                    </div>
+                </div>
+                <div data-input-type="padding">
+                    <p class="control_text">Margin:</p>
+                    <div data-unit="px" class="flex center_al center_js wrap gap10 style_container">
+                        <div class="input_box_small visually_hidden"></div>
+                        <div class="input_box_small flex"><input data-name="margin-top" type="number" placeholder="0"></div>
+                        <div class="input_box_small visually_hidden"></div>
+                        <div class="input_box_small flex"><input data-name="margin-left" type="number" placeholder="0"></div>
+                        <div class="input_box_small"><p data-type="unit" data-role="switch" class="flex center_al center_js">px</p></div>
+                        <div class="input_box_small flex"><input data-name="margin-right" type="number" placeholder="0"></div>
+                        <div class="input_box_small visually_hidden"></div>
+                        <div class="input_box_small flex"><input data-name="margin-bottom" type="number" placeholder="0"></div>
+                        <div class="input_box_small visually_hidden"></div>
+                    </div>
+                </div>
             </div>
         </div>
     </main>

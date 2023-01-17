@@ -87,6 +87,7 @@ const selector = (data_id) => {
     let selector_temp = "[data-id='" + data_id + "']";
     sel(2, "[data-active]").forEach((item) => item.setAttribute("data-active", "false"));
     sel(1, selector_temp).setAttribute("data-active", "true");
+    delete_unnecessary();
     open_edit_panel();
     bread_builder(sel(1, "[data-active='true']"));
 }
@@ -122,24 +123,28 @@ const listener = () => {
 
 let elem_panel = sel(1, ".elem_panel");
 let edit_panel = sel(1, ".edit_panel");
+let style_panel = sel(1, "[data-content='styles']");
+let content_panel = sel(1, "[data-content='content']");
 let page = sel(1, ".page");
 let page_temp = sel(1, ".page_temp");
 let bread = sel(1, ".breadcrumb");
 
 // =================================== Element panel ===================================
 
-sel(2, ".panel_heading").forEach((item) => {
-    item.addEventListener("click", ()=> {
+sel(2, "[data-heading]").forEach((item) => {
+    item.addEventListener("click", (event)=> {
         let heading = item.getAttribute("data-heading");
         let content_temp = "[data-content='" + heading + "']"
         let content = sel(1, content_temp);
 
+        if (event.target.parentElement.classList.contains("edit_panel")) {
+            edit_panel.querySelectorAll("[data-content]").forEach((item) => item.classList.add("display_none"));
+        }
+
         if (content.classList.contains("display_none")) {
             content.classList.remove("display_none");
-            console.log("1");
         } else {
-            content.classList.add("display_none");          // THis is not working
-            console.log("2");
+            content.classList.add("display_none");
         }
     })
 });
@@ -151,6 +156,26 @@ sel(1, ".elem_opener").addEventListener("click", () => {
     }
 })
 
+elem_panel.querySelectorAll("[data-element]").forEach((item) => {
+    item.addEventListener("click", () => {
+        type_opener(item.getAttribute("data-element"));
+    })
+})
+const type_opener = (code_name) => {
+    item_spawn(code_name);
+}
+const item_spawn = (item_name) => {
+    let active_elem = sel(1, "[data-active=true");
+    if (item_name == "div") {
+        let new_item = make("div", "Section", 1, 1, 1, 1);
+        active_elem.appendChild(new_item);
+        selector(new_item.getAttribute("data-id"))
+    } else if (item_name == "p") {
+        let new_item = make("p", "Paragraph", 1, 1, 1, 1);
+        active_elem.appendChild(new_item);
+        selector(new_item.getAttribute("data-id"))
+    }
+}
 
 
 
@@ -185,7 +210,7 @@ const stylesheet_adder = (name, style) => {
 
 const add_style = () => {
     let all_style = "";
-    Array.from(edit_panel.querySelectorAll("input")).map((input) => {
+    Array.from(style_panel.querySelectorAll("input")).map((input) => {
         let style_value = input.value;
         if (style_value != "") {
             let style_name = input.getAttribute("data-name");
@@ -201,15 +226,21 @@ const add_style = () => {
 
 const open_edit_panel = () => {
     sel(1, ".edit_panel").classList.remove("close_edit");
-    let active_elem = sel(1, "[data-active='true']").getAttribute("data-id");
-    let all_input = edit_panel.querySelectorAll("input");
+    let active_elem = sel(1, "[data-active='true']");
+    let all_input = style_panel.querySelectorAll("input");
     for (let i = 0; i < all_input.length; i++) {
         all_input[i].value = "";
     }
 
+    // ===================== Preparing the Content tab ====================
+    sel(1, "[data-name='elemenet_name']").value = active_elem.getAttribute("data-name");
+    if (active_elem.tagName == "P") {
+        sel(1, "[data-name='text_content']").value = active_elem.innerText;
+    }
+
     if (stylesheet.length > 0) {
         for (i in stylesheet) {
-            if (stylesheet[i][0] == active_elem) {
+            if (stylesheet[i][0] == active_elem.getAttribute("data-id")) {
                 let split_style = stylesheet[i][1].split(";");
                 split_style.pop();
                 for (i in split_style) {
@@ -226,22 +257,9 @@ const open_edit_panel = () => {
         }
     }
 }
-
-sel(2, ".panel_heading").forEach((item) => {
-    item.addEventListener("click", ()=> {
-        let heading = item.getAttribute("data-heading");
-        let content_temp = "[data-content='" + heading + "']"
-        let content = sel(1, content_temp);
-
-        if (content.classList.contains("display_none")) {
-            content.classList.remove("display_none");
-        } else {
-            content.classList.add("display_none");
-        }
-    })
-});
 sel(1, ".edit_opener").addEventListener("click", () => {
     if (sel(1, ".edit_panel").classList.contains("close_edit")) {
+        delete_unnecessary();
         open_edit_panel();
     } else {
         sel(1, ".edit_panel").classList.add("close_edit");
@@ -260,11 +278,36 @@ sel(2, "[data-type]").forEach((item) => {
         }
     })
 });
-sel(2, "[data-name]").forEach((item) => {item.addEventListener("change", () => {
-    add_style();
-})
+sel(2, "[data-name]").forEach((item) => {
+    item.addEventListener("change", () => {
+        add_style();
+    })
 })
 
+// =================== Adding content to Elements ====================
+
+const delete_unnecessary = () => {
+    let active_elem = sel(1, "[data-active='true']");
+    if (active_elem.tagName == "P") {
+        content_panel.querySelectorAll("[data-input-type='text']").forEach((item) => item.classList.remove("display_none"));
+    } else {
+        content_panel.querySelectorAll("[data-input-type='text']").forEach((item) => item.classList.add("display_none"));
+    }
+}
+
+let text_content = content_panel.querySelector("[data-name='text_content']");
+text_content.addEventListener("change", () => {
+    sel(1, "[data-active='true']").innerText = text_content.value;
+});
+text_content.addEventListener("blur", () => {
+    sel(1, "[data-active='true']").innerText = text_content.value;
+});
+
+let element_name = content_panel.querySelector("[data-name='elemenet_name']");
+element_name.addEventListener("blur", () => {
+    sel(1, "[data-active='true']").setAttribute("data-name", element_name.value);
+    bread_builder(sel(1, "[data-active='true']"));
+});
 
 
 
@@ -273,13 +316,5 @@ sel(2, "[data-name]").forEach((item) => {item.addEventListener("change", () => {
 // Body panel
 
 
-let test1 = make("p", "Paragraph", "test", "asd", "Hello World", 1);
-let test_mid = make("div", "Middle", "natasha", "askks", 1, test1)
-let test2 = make("div", "Section", "testdiv", "test", 1, test_mid);
-page.appendChild(test2);
-
-let test3 = make("h2", "Heading", 1, 1, "This is heading", 1);
-let test4 = make("div", "section", 1, 1, 1, test3);
-page.appendChild(test4);
 
 listener()
