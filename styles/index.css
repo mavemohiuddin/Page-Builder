@@ -1,0 +1,291 @@
+/* =================== Generics =================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@200;400;600;800;900&display=swap');
+
+/* =================== Resets =================== */
+
+* {
+    margin: 0px;
+    padding: 0px;
+    color: black;
+    background-color: transparent;
+    text-decoration: none;
+    border: none;
+    outline: none;
+    font-family: "nunito", "sans-serif";
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.3em;
+}
+
+/* =================== Styles =================== */
+
+.width {
+    max-width: 1170px;
+    width: 100%;
+    margin: auto;
+    display: flex;
+    align-items: center;
+}
+header {
+    height: 50px;
+    background-color: aliceblue;
+    box-shadow: 0px -20px 25px 0px black;
+    position: sticky;
+    top: 0px;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+}
+.page {
+    background-color: rgb(0 0 0 / 3%);
+    min-height: 100px;
+}
+.export {
+    padding: 5px 15px;
+    margin: 0px 20px 0px 0px;
+    background-color: rgb(0, 238, 255);
+    color: white;
+    border-radius: 4px;
+    text-shadow: 0px 0px 1px black;
+    border: solid 1px rgb(115, 113, 255);
+    cursor: pointer;
+}
+.download_files {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    background-color: rgb(241, 241, 241);
+    z-index: 1000;
+    height: 100vh;
+}
+.download_files .width {
+    position: relative;
+}
+.download_files .close_download {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    height: 40px;
+    width: 40px;
+    background-color: gray;
+    color: white;
+    font-weight: 800;
+    cursor: pointer;
+    border-radius: 4px;
+}
+.download_files .generic_heading {
+    font-size: 2rem;
+    font-weight: 600;
+    text-align: left;
+    width: 100%;
+    margin: 20px 0px 0px;
+}
+.download_files textarea {
+    height: 150px;
+    width: calc(100% - 40px);
+    border: none;
+    outline: solid 3px rgb(223, 223, 223);
+    resize: none;
+    border-radius: 2px;
+    background-color: white;
+    padding: 20px;
+}
+[data-name="bread"] {
+    display: inline-block;
+    font-size: 0.8rem;
+    font-weight: 800;
+    cursor: pointer;
+    position: relative;
+    margin-right: 20px;
+}
+[data-name="bread"]:not(:last-child)::after {
+    content: ">";
+    margin: 0px 5px;
+    position: absolute;
+    pointer-events: none;
+    cursor: default;
+    font-weight: 400;
+}
+[data-active='true'] {
+    box-shadow: 0px 0px 1px 2px blue;
+}
+[data-type] {
+    cursor: pointer;
+}
+.display_none {
+    display: none!important;
+}
+.visually_hidden {
+    visibility: hidden;
+    pointer-events: none;
+}
+.flex {
+    display: flex;
+}
+.flex_col {
+    display: flex;
+    flex-direction: column;
+}
+.wrap {
+    flex-wrap: wrap;
+}
+.gap10 {
+    gap: 10px;
+}
+.gap20 {
+    gap: 20px;
+}
+.gap30 {
+    gap: 30px;
+}
+.gap40 {
+    gap: 40px;
+}
+.gap50 {
+    gap: 50px;
+}
+.center_al {
+    align-items: center;
+}
+.center_js {
+    justify-content: center;
+}
+.style_container {
+    background-color: rgb(212, 239, 255);
+    border: solid 1px lightskyblue;
+    margin:10px;
+    padding: 10px;
+}
+.style_container > * {
+    height: 30px;
+    width: 30%;
+    background-color: white;
+}
+.style_container > * input {
+    padding: 3px 10px;
+    max-width: calc(100% - 20px);
+    font-size: 0.8rem;
+    font-family: "nunito", "sans-serif"
+}
+.style_container p {
+    line-height: 1em;
+    height: 100%;
+    width: 100%;
+}
+
+
+/* ==================== Edit Panel styles ==================== */
+
+.elem_panel {
+    position: fixed;
+    bottom: 0px;
+    left: 0px;
+    height: calc(100% - 50px);
+    width: 250px;
+    background-color: white;
+    border-right: solid 1px black;
+    box-shadow: 0px 0px 5px 0px rgb(128, 128, 128);
+    transition: all ease 0.3s;
+}
+.elem_panel * {
+    user-select: none!important;
+}
+.close_elem {
+    transform: translateX(-250px);
+}
+.elem_opener {
+    background-color: lightblue;
+    position: absolute;
+    top: 0px;
+    right: -40px;
+    height: 40px;
+    width: 40px;
+    line-height: 0px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0px 4px 4px 0px;
+    cursor: pointer;
+}
+.panel_heading {
+    font-size: 1.1rem;
+    font-weight: 600;
+    background-color: rgb(227, 255, 227);
+    border-bottom: solid 1px rgb(180, 180, 180);
+    position: relative;
+    cursor: pointer;
+}
+.panel_heading:not(:first-child) {
+    border-top: solid 1px rgb(180, 180, 180);
+}
+.panel_heading::after {
+    content: "v";
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+}
+.panel_elem {
+    background-color: rgb(250, 250, 250);
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+.panel_elem:not(:last-child) {
+    border-bottom: solid 1px rgb(240, 240, 240);
+}
+.panel_elem:hover {
+    background-color: rgb(215, 255, 215);
+}
+
+/* ==================== Edit panel styles ==================== */
+
+.edit_panel {
+    position: fixed;
+    bottom: 0px;
+    right: 0px;
+    height: calc(100% - 50px);
+    width: 250px;
+    background-color: white;
+    border-right: solid 1px black;
+    box-shadow: 0px 0px 5px 0px rgb(128, 128, 128);
+    transition: all ease 0.3s;
+}
+.edit_panel * {
+    user-select: none!important;
+}
+.edit_panel > *:not(.edit_opener):first-child {
+    margin-top: 5px;
+}
+.edit_panel > *:not(.edit_opener):last-child {
+    margin-bottom: 5px;
+}
+.close_edit {
+    transform: translateX(250px);
+}
+.edit_opener {
+    background-color: lightblue;
+    position: absolute;
+    top: 0px;
+    left: -40px;
+    height: 40px;
+    width: 40px;
+    line-height: 0px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px 0px 0px 4px;
+    cursor: pointer;
+}
+.control_text {
+    padding: 5px 20px;
+}
+
+
+
+#testdiv,
+#natasha {
+    padding: 30px;
+    outline: solid 1px;
+}

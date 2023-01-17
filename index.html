@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://kit.fontawesome.com/891d71dbba.js" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="./styles/index.css">
+    <script src="./scripts/index.js" defer></script>
+
+    <title>Page Builder</title>
+</head>
+<body>
+    
+    <header>
+        <div class="width">
+            <button class="export">Download</button>
+            <div class="breadcrumb"></div>
+        </div>
+    </header>
+
+    <main>
+        <div class="elem_panel close_elem">
+            <div class="elem_opener">X</div>
+            <h2 class="panel_heading control_text" data-heading="elements">Elements</h2>
+            <div class="panel_elems" data-content="elements">
+                <p class="panel_elem control_text">Section</p>
+                <p class="panel_elem control_text">Tabs</p>
+                <p class="panel_elem control_text">Accordions</p>
+                <p class="panel_elem control_text">Slideshow</p>
+            </div>
+            <h2 class="panel_heading control_text" data-heading="texts">Texts</h2>
+            <div class="panel_elems" data-content="texts">
+                <p class="panel_elem control_text">heading</p>
+                <p class="panel_elem control_text">paragraph</p>
+                <p class="panel_elem control_text">button</p>
+            </div>
+            <h2 class="panel_heading control_text" data-heading="media">Media</h2>
+            <div class="panel_elems" data-content="media">
+                <p class="panel_elem control_text">image</p>
+                <p class="panel_elem control_text">icon</p>
+                <p class="panel_elem control_text">video</p>
+            </div>
+        </div>
+
+        <div class="download_files flex center_al center_js display_none">
+            <div class="width flex_col">
+                <div class="close_download flex center_al center_js">X</div>
+                <h2 class="generic_heading">HTML:</h2>
+                <textarea name="html" id="export_html" readonly></textarea>
+                <h2 class="generic_heading">CSS:</h2>
+                <textarea name="css" id="export_css" readonly></textarea>
+            </div>
+        </div>
+
+        <div class="page"></div>
+        <div class="page_temp display_none"></div>
+
+        <div class="edit_panel close_edit">
+            <div class="edit_opener">X</div>
+            <p class="control_text">Padding:</p>
+            <div data-unit="px" class="flex center_al center_js wrap gap10 style_container">
+                <div class="test_box visually_hidden"></div>
+                <div class="test_box flex"><input data-name="padding-top" type="number" placeholder="0"></div>
+                <div class="test_box visually_hidden"></div>
+                <div class="test_box flex"><input data-name="padding-left" type="number" placeholder="0"></div>
+                <div class="test_box"><p data-type="unit" data-role="switch" class="flex center_al center_js">px</p></div>
+                <div class="test_box flex"><input data-name="padding-right" type="number" placeholder="0"></div>
+                <div class="test_box visually_hidden"></div>
+                <div class="test_box flex"><input data-name="padding-bottom" type="number" placeholder="0"></div>
+                <div class="test_box visually_hidden"></div>
+            </div>
+            <p class="control_text">Margin:</p>
+            <div data-unit="px" class="flex center_al center_js wrap gap10 style_container">
+                <div class="test_box visually_hidden"></div>
+                <div class="test_box flex"><input data-name="margin-top" type="number" placeholder="0"></div>
+                <div class="test_box visually_hidden"></div>
+                <div class="test_box flex"><input data-name="margin-left" type="number" placeholder="0"></div>
+                <div class="test_box"><p data-type="unit" data-role="switch" class="flex center_al center_js">px</p></div>
+                <div class="test_box flex"><input data-name="margin-right" type="number" placeholder="0"></div>
+                <div class="test_box visually_hidden"></div>
+                <div class="test_box flex"><input data-name="margin-bottom" type="number" placeholder="0"></div>
+                <div class="test_box visually_hidden"></div>
+            </div>
+        </div>
+    </main>
+
+    <footer></footer>
+</body>
+</html>
