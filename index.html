@@ -16,32 +16,41 @@
     
     <header>
         <div class="width">
+            <div class="elem_opener flex center_al center_js"><img src="./images/elements.png" alt=""></div>
             <button class="export">Download</button>
             <div class="breadcrumb"></div>
+            <div class="edit_opener flex center_al center_js"><img src="./images/gear.webp" alt=""></div>
         </div>
     </header>
 
     <main>
         <div class="elem_panel close_elem">
-            <div class="elem_opener">X</div>
-            <h2 class="panel_heading control_text" data-heading="elements">Elements</h2>
-            <div class="panel_elems" data-content="elements">
-                <p class="panel_elem control_text" data-element="div">Section</p>
-                <p class="panel_elem control_text" data-element="div">Tabs</p>
-                <p class="panel_elem control_text" data-element="div">Accordions</p>
-                <p class="panel_elem control_text" data-element="div">Slideshow</p>
-            </div>
-            <h2 class="panel_heading control_text" data-heading="texts">Texts</h2>
-            <div class="panel_elems" data-content="texts">
-                <p class="panel_elem control_text" data-element="p">heading</p>
-                <p class="panel_elem control_text" data-element="p">paragraph</p>
-                <p class="panel_elem control_text" data-element="p">button</p>
-            </div>
-            <h2 class="panel_heading control_text" data-heading="media">Media</h2>
-            <div class="panel_elems" data-content="media">
-                <p class="panel_elem control_text" data-element="img">image</p>
-                <p class="panel_elem control_text" data-element="img">icon</p>
-                <p class="panel_elem control_text" data-element="img">video</p>
+            <div class="type_bar"></div>
+            <div class="backdrop"></div>
+            <div class="">
+                <h2 class="panel_heading control_text" data-heading="elements">Layouts</h2>
+                <div class="panel_elems" data-content="elements">
+                    <p class="panel_elem control_text" data-element="div">Containers</p>
+                    <p class="panel_elem control_text" data-element="tab">Tabs</p>
+                    <p class="panel_elem control_text" data-element="accordion">Accordions</p>
+                    <p class="panel_elem control_text" data-element="slider">Slideshow</p>
+                    <p class="panel_elem control_text" data-element="cards">cards</p>
+                </div>
+                <h2 class="panel_heading control_text" data-heading="texts">Texts</h2>
+                <div class="panel_elems" data-content="texts">
+                    <p class="panel_elem control_text" data-element="heading">heading</p>
+                    <p class="panel_elem control_text" data-element="text">paragraph</p>
+                    <p class="panel_elem control_text" data-element="button">button</p>
+                    <p class="panel_elem control_text" data-element="list">List</p>
+                    <p class="panel_elem control_text" data-element="HTML">HTML</p>
+                </div>
+                <h2 class="panel_heading control_text" data-heading="media">Media</h2>
+                <div class="panel_elems" data-content="media">
+                    <p class="panel_elem control_text" data-element="image">image</p>
+                    <p class="panel_elem control_text" data-element="icon">icon</p>
+                    <p class="panel_elem control_text" data-element="video">video</p>
+                    <p class="panel_elem control_text" data-element="progress">Progress_bar</p>
+                </div>
             </div>
         </div>
 
@@ -51,28 +60,41 @@
                 <h2 class="generic_heading">HTML:</h2>
                 <textarea name="html" id="export_html" readonly></textarea>
                 <h2 class="generic_heading">CSS:</h2>
-                <textarea name="css" id="export_css" readonly></textarea>
+                <textarea name="css" id="export_css" readonly placeholder="No CSS"></textarea>
             </div>
         </div>
 
-        <div class="page" data-active="true"></div>
+        <div class="page"></div>
         <div class="page_temp display_none"></div>
 
         <div class="edit_panel close_edit">
-            <div class="edit_opener">X</div>
-            <p class="control_text edit_tab_heading" data-heading="content">Content</p>
-            <p class="control_text edit_tab_heading" data-heading="styles">Styles</p>
+            <div class="flex center_js">
+                <p class="control_text edit_tab_heading text_center active" data-heading="content">Content</p>
+                <p class="control_text edit_tab_heading text_center" data-heading="styles">Styles</p>
+            </div>
             <div class="" data-content="content">
                 <div data-input-type="text">
                     <p class="control_text">Text:</p>
-                    <div class="flex center_al center_js wrap gap10 style_container">
+                    <div class="flex center_al center_js gap10 style_container">
                         <div class="input_box_large flex"><textarea data-name="text_content" type="text"></textarea></div>
                     </div>
                 </div>
                 <div data-input-type="item_name">
                     <p class="control_text">Container Name:</p>
-                    <div class="flex center_al center_js wrap gap10 style_container">
+                    <div class="flex center_al center_js gap10 style_container">
                         <div class="input_box_large flex"><input data-name="elemenet_name" type="text"></div>
+                    </div>
+                </div>
+                <div data-input-type="item_id">
+                    <p class="control_text">ID:</p>
+                    <div class="flex center_al center_js gap10 style_container">
+                        <div class="input_box_large flex"><input data-name="elemenet_id" type="text"></div>
+                    </div>
+                </div>
+                <div data-input-type="item_clss">
+                    <p class="control_text">Class:</p>
+                    <div class="flex center_al center_js gap10 style_container">
+                        <div class="input_box_large flex"><input data-name="elemenet_class" type="text"></div>
                     </div>
                 </div>
             </div>
@@ -84,7 +106,7 @@
                         <div class="input_box_small flex"><input data-name="padding-top" type="number" placeholder="0"></div>
                         <div class="input_box_small visually_hidden"></div>
                         <div class="input_box_small flex"><input data-name="padding-left" type="number" placeholder="0"></div>
-                        <div class="input_box_small"><p data-type="unit" data-role="switch" class="flex center_al center_js">px</p></div>
+                        <div class="input_box_small"><p data-input-type="unit" data-role="switch" class="flex center_al center_js">px</p></div>
                         <div class="input_box_small flex"><input data-name="padding-right" type="number" placeholder="0"></div>
                         <div class="input_box_small visually_hidden"></div>
                         <div class="input_box_small flex"><input data-name="padding-bottom" type="number" placeholder="0"></div>
@@ -98,7 +120,7 @@
                         <div class="input_box_small flex"><input data-name="margin-top" type="number" placeholder="0"></div>
                         <div class="input_box_small visually_hidden"></div>
                         <div class="input_box_small flex"><input data-name="margin-left" type="number" placeholder="0"></div>
-                        <div class="input_box_small"><p data-type="unit" data-role="switch" class="flex center_al center_js">px</p></div>
+                        <div class="input_box_small"><p data-input-type="unit" data-role="switch" class="flex center_al center_js">px</p></div>
                         <div class="input_box_small flex"><input data-name="margin-right" type="number" placeholder="0"></div>
                         <div class="input_box_small visually_hidden"></div>
                         <div class="input_box_small flex"><input data-name="margin-bottom" type="number" placeholder="0"></div>
@@ -108,6 +130,102 @@
             </div>
         </div>
     </main>
+
+    <aside data-reserve>
+        <div data-reserve-type="containers">
+            <div class="style_container" data-spawn="sec_01">
+                <div class="div">
+                    <img src="./images/column_01.png" alt="">
+                    <p class="reserve_name text_center">Section</p>
+                </div>
+            </div>
+            <div class="style_container" data-spawn="col_01">
+                <div class="div">
+                    <img src="./images/column_01.png" alt="">
+                    <p class="reserve_name text_center">1-Column</p>
+                </div>
+            </div>
+            <div class="style_container" data-spawn="col_02">
+                <div class="section">
+                    <img src="./images/column_02.png" alt="">
+                    <p class="reserve_name text_center">2-Column</p>
+                </div>
+            </div>
+            <div class="style_container" data-spawn="col_03">
+                <div class="col_3">
+                    <img src="./images/column_03.png" alt="">
+                    <p class="reserve_name text_center">3-Column</p>
+                </div>
+            </div>
+            <div class="style_container" data-spawn="col_04">
+                <div class="col_4">
+                    <img src="./images/column_04.png" alt="">
+                    <p class="reserve_name text_center">4-Column</p>
+                </div>
+            </div>
+            <div class="style_container" data-spawn="col_12">
+                <div class="col_12">
+                    <img src="./images/column_12.png" alt="">
+                    <p class="reserve_name text_center">1:2-Column</p>
+                </div>
+            </div>
+            <div class="style_container" data-spawn="col_21">
+                <div class="col_21">
+                    <img src="/images/column_21.png" alt="">
+                    <p class="reserve_name text_center">2:1-Column</p>
+                </div>
+            </div>
+            <div class="style_container" data-spawn="col_2x2">
+                <div class="col_2x2">
+                    <img src="./images/column_2x2.png" alt="">
+                    <p class="reserve_name text_center">2x2-Column</p>
+                </div>
+            </div>
+            <div class="style_container" data-spawn="block">
+                <div class="div">
+                    <img src="./images/block.png" alt="">
+                    <p class="reserve_name text_center">Block</p>
+                </div>
+            </div>
+        </div>
+        <div data-reserve-type="text">
+            <div class="style_container" data-spawn="text_01">
+                <div class="image">
+                    <img src="./images/paragraph_01.png" alt="">
+                    <p class="reserve_name text_center">Paragraph</p>
+                </div>
+            </div>
+            <div class="style_container" data-spawn="text_02">
+                <div class="image">
+                    <img src="./images/paragraph_02.png" alt="">
+                    <p class="reserve_name text_center">Paragraph</p>
+                </div>
+            </div>
+        </div>
+        <div data-reserve-type="image">
+            <div class="style_container" data-spawn="img_01">
+                <div class="image">
+                    <img src="./images/placeholder_01.png" alt="">
+                    <p class="reserve_name text_center">Image</p>
+                </div>
+            </div>
+        </div>
+        <div data-reserve-type="cards">
+            <div class="empty"></div>
+            <div class="image_heading_text"></div>
+            <div class="review_format"></div>
+            <div class="price_list_format"></div>
+            <div class="image_overlay_type"></div>
+        </div>
+        <div data-reserve-type="maintainence">
+            <div class="style_container" data-spawn="img_01">
+                <div class="image">
+                    <img src="./images/paragraph_01.png" alt="">
+                    <p class="reserve_name text_center">Under Maintenence</p>
+                </div>
+            </div>
+        </div>
+    </aside>
 
     <footer></footer>
 </body>

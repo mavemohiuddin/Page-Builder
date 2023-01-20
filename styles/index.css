@@ -40,6 +40,7 @@ header {
 .page {
     background-color: rgb(0 0 0 / 3%);
     min-height: 100px;
+    position: relative;
 }
 .export {
     padding: 5px 15px;
@@ -92,6 +93,15 @@ header {
     background-color: white;
     padding: 20px;
 }
+[data-name] {
+    min-height: 30px;
+}
+[data-name = "1"] {
+    pointer-events: none;
+}
+[data-name = "1"] > * {
+    pointer-events: all;
+}
 [data-name="bread"] {
     display: inline-block;
     font-size: 0.8rem;
@@ -99,6 +109,7 @@ header {
     cursor: pointer;
     position: relative;
     margin-right: 20px;
+    min-height: 0px;
 }
 [data-name="bread"]:not(:last-child)::after {
     content: ">";
@@ -107,6 +118,26 @@ header {
     pointer-events: none;
     cursor: default;
     font-weight: 400;
+}
+[data-active]:not(:has([data-active])):not(p):not(h1):not(h2):not(h3):not(h4):not(h5):not(h6):not(img) {
+    min-height: 80px;
+    position: relative;
+}
+[data-active]:not(:has([data-active])):not(p):not(h1):not(h2):not(h3):not(h4):not(h5):not(h6):not(img)::before {
+    content: attr(data-name) "";
+    font-size: 1rem;
+    font-weight: 800;
+    color: #7c7c7c;
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    height: calc(100% - 24px);
+    width: calc(100% - 24px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: solid 3px #d1d1d1;
+    pointer-events: none;
 }
 [data-active='true'] {
     box-shadow: 0px 0px 1px 2px blue;
@@ -163,21 +194,28 @@ header {
 .center_js {
     justify-content: center;
 }
+.text_center {
+    text-align: center;
+}
 .style_container {
     background-color: rgb(212, 239, 255);
     border: solid 1px lightskyblue;
     margin: 0px 10px 10px;
     padding: 10px;
 }
+[data-content="styles"] .style_container {
+    gap: 10px;
+}
 .input_box_small {
     height: 30px;
-    width: 30%;
+    width: 30%!important;
     background-color: white;
 }
 .input_box_large {
     width: 100%;
     background-color: white;
 }
+[data-content="content"] .style_container > * input,
 [data-content="styles"] .style_container > * input {
     padding: 3px 10px;
     max-width: calc(100% - 20px);
@@ -185,11 +223,7 @@ header {
     font-family: "nunito", "sans-serif";
 }
 [data-content="content"] .style_container > * input {
-    padding: 3px 10px;
-    max-width: calc(100% - 20px);
-    font-size: 0.8rem;
     width: 100%;
-    font-family: "nunito", "sans-serif";
     height: 30px;
 }
 [data-content="content"] .style_container > * textarea {
@@ -206,9 +240,12 @@ header {
     height: 100%;
     width: 100%;
 }
+aside {
+    display: none;
+}
 
 
-/* ==================== Edit Panel styles ==================== */
+/* ==================== Elem Panel styles ==================== */
 
 .elem_panel {
     position: fixed;
@@ -220,6 +257,7 @@ header {
     border-right: solid 1px black;
     box-shadow: 0px 0px 5px 0px rgb(128, 128, 128);
     transition: all ease 0.3s;
+    z-index: 10;
 }
 .elem_panel * {
     user-select: none!important;
@@ -230,16 +268,81 @@ header {
 .elem_opener {
     background-color: lightblue;
     position: absolute;
-    top: 0px;
-    right: -40px;
+    top: 50%;
+    left: 20px;
     height: 40px;
     width: 40px;
     line-height: 0px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 0px 4px 4px 0px;
+    border-radius: 50%;
+    transform: translateY(-50%);
     cursor: pointer;
+}
+.elem_opener img {
+    height: 30px;
+    width: 30px;
+}
+.type_bar {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    height: calc(100% - 20px);
+    width: 150px;
+    background-color: #f1f1f1;
+    z-index: -2;
+    padding: 20px 10px;
+    transition: all ease 0.3s;
+    border-right: solid 1px gray;
+    overflow-X: hidden;
+}
+.type_open {
+    transform: translateX(172px);
+}
+.type_bar img {
+    max-width: 100%;
+    cursor: pointer;
+}
+.reserve_name {
+    /* transform: scale(0.8); */
+    font-weight: 800;
+    margin: 0px;
+    font-size: 0.8rem;
+    line-height: 1em;
+}
+.type_bar .style_container {
+    margin: 0px 0px 20px 0px;
+    padding: 5px;
+}
+.type_bar::-webkit-scrollbar {
+    width: 8px;
+    background: white;
+    border-radius: 100px;
+    box-shadow: 0px 0px 3px rgb(134, 134, 134) inset;
+    margin-right: 2px;
+    padding: 1px;
+}
+.type_bar::-webkit-scrollbar-thumb {
+    width: 5px;
+    background-color: rgb(197, 229, 255);
+    border-radius: 100px;
+    box-shadow: 0px 0px 3px rgb(134, 134, 134) inset;
+}
+.type_bar::-webkit-scrollbar-thumb:hover {
+    background-color: rgb(170, 217, 255);
+}
+.type_bar::-webkit-scrollbar-thumb:active {
+    background-color: rgb(139, 203, 255);
+}
+.backdrop {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    height: 100%;
+    width: 100%;
+    background-color: white;
+    z-index: -1;
 }
 .panel_heading {
     font-size: 1.1rem;
@@ -277,13 +380,13 @@ header {
     position: fixed;
     bottom: 0px;
     right: 0px;
-    height: calc(100% - 90px);
+    height: calc(100% - 70px);
     width: 250px;
     background-color: white;
     border-right: solid 1px black;
     box-shadow: 0px 0px 5px 0px rgb(128, 128, 128);
     transition: all ease 0.3s;
-    padding: 20px 0px;
+    padding: 10px 0px;
 }
 .edit_panel * {
     user-select: none!important;
@@ -300,32 +403,83 @@ header {
 .edit_opener {
     background-color: lightblue;
     position: absolute;
-    top: 0px;
-    left: -40px;
+    top: 50%;
+    right: 20px;
     height: 40px;
     width: 40px;
     line-height: 0px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 4px 0px 0px 4px;
+    border-radius: 50%;
+    transform: translateY(-50%);
     cursor: pointer;
+}
+.edit_opener img {
+    height: 30px;
+    width: 30px;
 }
 .control_text {
     padding: 5px 20px;
 }
 .edit_tab_heading {
     display: inline-block;
-    padding: 5px 10px;
-    border: solid 1px black;
+    width: 50%;
     cursor: pointer;
-    margin: 0px 20px 20px;
+    margin: 0px 0px 20px;
+    border-bottom: solid 1px rgb(212 212 212);
+}
+.edit_tab_heading.active {
+    box-shadow: 0px 0px 12px 0px rgb( 212 212 212) inset;
 }
 
-
-
-#testdiv,
-#natasha {
-    padding: 30px;
-    outline: solid 1px;
+/* ==================== Passable classes ==================== */
+:root {
+    --row-gutter: 20px;
+}
+.image {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    object-position: center center;
+}
+.width {
+    max-width: 1170px;
+    width: 100%;
+    margin: auto;
+}
+.flex {
+    display: flex;
+    gap: var(--row-gutter);
+}
+.flex > * {
+    width: 100%;
+}
+.row_12 > *:nth-child(1) {
+    width: 50%;
+}
+.row_12 > *:nth-child(2) {
+    width: 100%;
+}
+.row_21 > *:nth-child(1) {
+    width: 100%;
+}
+.row_21 > *:nth-child(2) {
+    width: 50%;
+}
+.wrap {
+    flex-wrap: wrap;
+}
+.wrap > * {
+    max-width: calc(50% - (var(--row-gutter)/2));
+}
+.initial {
+    min-height: 4.5rem;
+}
+.initial::first-letter {
+    font-size: 4.5rem;
+    line-height: 0.7em;
+    float: left;
+    margin: 5px 5px -5px 0px;
+    font-weight: 800;
 }

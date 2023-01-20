@@ -10,7 +10,7 @@ const sel = (type, name) => {
     }
 }
 
-const make = (name, data_name, id, cls, htm, child) => {
+const make = (name, data_name, data_add, id, cls, htm, child) => {
     let ans = document.createElement(name);
 
     if (id != 1) {
@@ -27,12 +27,32 @@ const make = (name, data_name, id, cls, htm, child) => {
     }
 
     if (data_name != "bread") {
-        ans.setAttribute("data-active", "false");
-        ans.setAttribute("data-id", data_id());
+        if (data_name != "1") {
+            ans.setAttribute("data-active", "false");
+            ans.setAttribute("data-id", data_id());
+        }
+    }
+    if (data_add == 1) {
+        ans.setAttribute("data-add", "false");
+    } else {
+        ans.setAttribute("data-add", data_add);
     }
     ans.setAttribute("data-name", data_name);
     return ans;
 }
+
+// =================================== Generic Identifier ===================================
+
+let elem_panel = sel(1, ".elem_panel");
+let edit_panel = sel(1, ".edit_panel");
+let style_panel = sel(1, "[data-content='styles']");
+let content_panel = sel(1, "[data-content='content']");
+let page = sel(1, ".page");
+let page_temp = sel(1, ".page_temp");
+let bread = sel(1, ".breadcrumb");
+let reserve = sel(1, "[data-reserve]");
+let type_bar = elem_panel.querySelector(".type_bar");
+let stylesheet = [];
 
 // =================================== Generating unique id for each item; ===================================
 
@@ -53,29 +73,49 @@ sel(1, ".close_download").addEventListener("click", () => {
 sel(1, ".export").addEventListener("click", () => {
     sel(1, ".download_files").classList.remove("display_none");
 
-    // =================================== Exporting HTML ===================================
-
-    page_temp.innerHTML = page.innerHTML;
-    page_temp.querySelectorAll("[data-active]").forEach((item) => item.removeAttribute("data-active"));
-    page_temp.querySelectorAll("[data-name]").forEach((item) => item.removeAttribute("data-name"));
-    page_temp.querySelectorAll("[style]").forEach((item) => item.removeAttribute("style"));
-    let page_html = page_temp.innerHTML;
-    sel(1, "#export_html").value = page_html;
-
     // =================================== Exporting CSS ===================================
 
-    if (stylesheet.length > 0) {
-        let export_style = "";
-        for (i in stylesheet) {
-            let class_name = stylesheet[i][0]
-            let style_value = stylesheet[i][1];
-            let compiled_style = "[data-id=" + class_name + "] {" + style_value + "}";
-            export_style += compiled_style;
+    page_temp.innerHTML = page.innerHTML;
+
+    page_temp.querySelectorAll("[data-id]").forEach((item) => {
+        if (item.hasAttribute("style")) {
+            if (item.getAttribute("style").length > 0) {
+                let export_style = "";
+                if (item.hasAttribute("id")) {
+                    if (item.getAttribute("id").length > 0) {
+                        export_style += "#" + item.getAttribute("id") + " {" + item.getAttribute("style") + "}";
+                    } else {
+                        export_style += "[data-id='" + item.getAttribute("data-id") + "'] {" + item.getAttribute("style") + "}";
+                    }
+                } else {
+                    export_style += "[data-id='" + item.getAttribute("data-id") + "'] {" + item.getAttribute("style") + "}";
+                }
+                sel(1, "#export_css").value = export_style;
+            }
         }
-        sel(1, "#export_css").value = export_style;
-    } else {
-        sel(1, "#export_css").value = "No CSS";
-    }
+    })
+
+    // =================================== Exporting HTML ===================================
+
+    page_temp.querySelectorAll("[data-active]").forEach((item) => item.removeAttribute("data-active"));
+    page_temp.querySelectorAll("[data-name]").forEach((item) => item.removeAttribute("data-name"));
+    page_temp.querySelectorAll("[data-add]").forEach((item) => item.removeAttribute("data-add"));
+    page_temp.querySelectorAll("[style]").forEach((item) => item.removeAttribute("style"));
+    page_temp.querySelectorAll("[bis_skin_checked]").forEach((item) => item.removeAttribute("bis_skin_checked"));
+    page_temp.querySelectorAll("[class]").forEach((item) => {
+        if (item.getAttribute("class").length <= 0) {
+            item.removeAttribute("class");
+        }
+    })
+    page_temp.querySelectorAll("[id]").forEach((item) => {
+        if (item.getAttribute("id").length > 0) {
+            item.removeAttribute("data-id");
+        } else {
+            item.removeAttribute("id");
+        }
+    });
+    let page_html = page_temp.innerHTML;
+    sel(1, "#export_html").value = page_html;
 })
 
 // =================================== Generating Breadcrumb ===================================
@@ -98,7 +138,7 @@ const bread_builder = (me) => {
         bread_list.reverse();
         bread_target_list.reverse();
         for (i in bread_list) {
-            let bread_temp = make("p", "bread", 1, 1, bread_list[i], 1);
+            let bread_temp = make("p", "bread", 1, 1, 1, bread_list[i], 1);
             bread_temp.setAttribute("data-destination", bread_target_list[i]);
             bread_temp.addEventListener("click", (event) => {
                 selector(event.target.getAttribute("data-destination"));
@@ -107,8 +147,10 @@ const bread_builder = (me) => {
         }
         bread_list = [];
     } else {
-        bread_list.push(me.getAttribute("data-name"));
-        bread_target_list.push(me.getAttribute("data-id"))
+        if (me.getAttribute("data-name") != 1) {
+            bread_list.push(me.getAttribute("data-name"));
+            bread_target_list.push(me.getAttribute("data-id"));
+        }
         bread_builder(me.parentElement);
     }
 }
@@ -119,40 +161,29 @@ const listener = () => {
     })
 }
 
-// =================================== Generic Identifier ===================================
-
-let elem_panel = sel(1, ".elem_panel");
-let edit_panel = sel(1, ".edit_panel");
-let style_panel = sel(1, "[data-content='styles']");
-let content_panel = sel(1, "[data-content='content']");
-let page = sel(1, ".page");
-let page_temp = sel(1, ".page_temp");
-let bread = sel(1, ".breadcrumb");
-
 // =================================== Element panel ===================================
 
-sel(2, "[data-heading]").forEach((item) => {
-    item.addEventListener("click", (event)=> {
-        let heading = item.getAttribute("data-heading");
-        let content_temp = "[data-content='" + heading + "']"
-        let content = sel(1, content_temp);
-
-        if (event.target.parentElement.classList.contains("edit_panel")) {
-            edit_panel.querySelectorAll("[data-content]").forEach((item) => item.classList.add("display_none"));
-        }
-
+elem_panel.querySelectorAll("[data-heading]").forEach((item) => {
+    item.addEventListener("click", ()=> {
+        let content_temp = "[data-content='" + item.getAttribute("data-heading") + "']";
+        let content = elem_panel.querySelector(content_temp); 
         if (content.classList.contains("display_none")) {
             content.classList.remove("display_none");
         } else {
             content.classList.add("display_none");
+            type_bar.classList.remove("type_open");
         }
     })
 });
+const elem_panel_closer = () => {
+    elem_panel.classList.add("close_elem");
+    type_bar.classList.remove("type_open");
+}
 sel(1, ".elem_opener").addEventListener("click", () => {
-    if (sel(1, ".elem_panel").classList.contains("close_elem")) {
-        sel(1, ".elem_panel").classList.remove("close_elem");
+    if (elem_panel.classList.contains("close_elem")) {
+        elem_panel.classList.remove("close_elem");
     } else {
-        sel(1, ".elem_panel").classList.add("close_elem");
+        elem_panel_closer();
     }
 })
 
@@ -161,52 +192,157 @@ elem_panel.querySelectorAll("[data-element]").forEach((item) => {
         type_opener(item.getAttribute("data-element"));
     })
 })
+
+// ==================== Creating visuals for item drawer ====================
+
 const type_opener = (code_name) => {
-    item_spawn(code_name);
+    if (code_name == "div") {
+        type_bar.innerHTML = reserve.querySelector("[data-reserve-type='containers']").innerHTML;
+    } else if (code_name == "text") {
+        type_bar.innerHTML = reserve.querySelector("[data-reserve-type='text']").innerHTML;
+    } else if (code_name == "image") {
+        type_bar.innerHTML = reserve.querySelector("[data-reserve-type='image']").innerHTML;
+    } else {
+        type_bar.innerHTML = reserve.querySelector("[data-reserve-type='maintainence']").innerHTML;
+    }
+    type_bar.classList.add("type_open");
+    elem_panel.querySelectorAll("[data-spawn]").forEach((item) => {
+        item.addEventListener("click", () => {
+            item_spawn(item.getAttribute("data-spawn"));
+        })
+    })
 }
 const item_spawn = (item_name) => {
-    let active_elem = sel(1, "[data-active=true");
-    if (item_name == "div") {
-        let new_item = make("div", "Section", 1, 1, 1, 1);
-        active_elem.appendChild(new_item);
-        selector(new_item.getAttribute("data-id"))
-    } else if (item_name == "p") {
-        let new_item = make("p", "Paragraph", 1, 1, 1, 1);
-        active_elem.appendChild(new_item);
-        selector(new_item.getAttribute("data-id"))
+    if (item_name == "sec_01") {
+        let new_item = make_row(1);
+        let new_sec = make("section", "section", "section", 1, 1, 1, new_item)
+        commit_add(new_sec);
+    } else if (item_name == "col_01") {
+        let new_item = make_row(1);
+        commit_add(new_item);
+    } else if (item_name == "col_02") {
+        let new_item = make_row(2);
+        commit_add(new_item); 
+    } else if (item_name == "col_03") {
+        let new_item = make_row(3);
+        commit_add(new_item);
+    } else if (item_name == "col_04") {
+        let new_item = make_row(4);
+        commit_add(new_item);
+    } else if (item_name == "col_12") {
+        let new_item = make_row(2);
+        new_item.children[0].classList.add("row_12");
+        commit_add(new_item);
+    } else if (item_name == "col_21") {
+        let new_item = make_row(2);
+        new_item.children[0].classList.add("row_21");
+        commit_add(new_item);
+    } else if (item_name == "col_2x2") {
+        let new_item = make_row(4);
+        new_item.children[0].classList.add("wrap");
+        commit_add(new_item);
+    } else if (item_name == "block") {
+        let new_item = make("div", "Block", "container", 1, 1, 1, 1);
+        commit_add(new_item);
+    } else if (item_name == "text_01") {
+        let new_item = make("p", "Paragraph", "element", 1, 1, "Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus asperiores ab laborum corporis possimus. Vitae sequi neque, iste eveniet facere saepe reprehenderit sed tempore, magnam voluptate velit asperiores nobis molestiae!", 1);
+        commit_add(new_item);
+    } else if (item_name == "text_02") {
+        let new_item = make("p", "Paragraph", "element", 1, "initial", "Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus asperiores ab laborum corporis possimus. Vitae sequi neque, iste eveniet facere saepe reprehenderit sed tempore, magnam voluptate velit asperiores nobis molestiae!", 1);
+        commit_add(new_item);
+    } else if (item_name == "img_01") {
+        let new_item = make("img", "Image", "element", 1, "image", 1, 1);
+        new_item.setAttribute("src", "./images/placeholder_01.png");
+        commit_add(new_item);
     }
 }
 
+const make_row = (col_count) => {
+    let mid_row = make("div", 1, 1, 1, "flex", 1, 1);
+    for (let i=0; i<col_count; i++) {
+        let new_column = make("div", "Column", "container", 1, 1, 1, 1);
+        let mid_col = make("div", 1, 1, 1, 1, 1, new_column);
+        mid_row.appendChild(mid_col);
+    }
+    mid_row.classList.add("width");
+    return make("div", "Row", "host_container", 1, 1, 1, mid_row);
+}
 
+const commit_add = (this_item) => {
+    let active_elem = sel(1, "[data-active=true");
 
+    if (this_item.getAttribute("data-add") == "section") {
+        page.appendChild(this_item);
+    } else if (this_item.getAttribute("data-add") == "host_container") {
+        if (page.childElementCount == 0) {
+            let new_sec = make("section", "Section", "section", 1, 1, 1, this_item);
+            page.appendChild(new_sec);
+        } else {
+            if (active_elem.getAttribute("data-add") == "element") {
+                let active_parent = active_elem.parentElement;
+                active_parent.appendChild(this_item);
+            } else if (active_elem.getAttribute("data-add") == "host_container") {
+                let active_parent = active_elem.parentElement;
+                active_parent.appendChild(this_item);
+            } else {
+                active_elem.appendChild(this_item);
+            }
+        }
+    } else if (this_item.getAttribute("data-name") == "Block") {
+        if (page.childElementCount == 0) {
+            let new_temp = make_container(this_item);
+            let new_sec = make("section", "Section", "section", 1, 1, 1, new_temp);
+            page.appendChild(new_sec);
+        } else {
+            let active_parent = active_elem.parentElement;
+            if (active_elem.getAttribute("data-add") == "element") {
+                active_parent.appendChild(this_item);
+            } else if (active_elem.getAttribute("data-add") == "section") {
+                let new_temp = make_container(this_item);
+                commit_add(new_temp); 
+            } else if (active_elem.getAttribute("data-add") == "host_container") {
+                let new_temp = make_container(this_item);
+                active_parent.appendChild(new_temp);
+            } else {
+                active_elem.appendChild(this_item);
+            }
+        }
+    } else{ 
+        if (page.childElementCount == 0) {
+            let new_temp = make_container(this_item);
+            commit_add(new_temp);
+        } else {
+            if (active_elem.getAttribute("data-add") == "container") {
+                active_elem.appendChild(this_item);
+            } else if (active_elem.getAttribute("data-add") == "section") {
+                let new_temp = make_container(this_item);
+                commit_add(new_temp);
+            } else {
+                let active_parent = active_elem.parentElement;
+                if (active_parent.getAttribute("data-add") == "container") {
+                    active_parent.appendChild(this_item);
+                } else {
+                    let new_temp = make_container(this_item);
+                    commit_add(new_temp);
+                }
+            }
+        }
+    }
+    selector(this_item.getAttribute("data-id"));
+    elem_panel.classList.add("close_elem");
+    type_bar.classList.remove("type_open");
+}
+const make_container = (this_item) => {
+    let new_column = make("div", "Column", "container", 1, 1, 1, this_item);
+    let mid_col = make("div", 1, 1, 1, 1, 1, new_column)
+    let mid_row = make("div", 1, 1, 1, "flex", 1, mid_col);
+    mid_row.classList.add("width");
+    return make("div", "Row", "host_container", 1, 1, 1, mid_row);
+}
 
 // =================================== Edit panel ===================================
 
 // =================================== Generating element css ===================================
-let stylesheet = [];
-
-const stylesheet_adder = (name, style) => {
-    let set = [name, style];
-    let changed = 0;
-
-    if (stylesheet.length == 0) {
-        stylesheet.push(set);
-    } else {
-        for (i in stylesheet) {
-            if (changed == 0) {
-                if (stylesheet[i][0] == name) {
-                    stylesheet.splice(i , 1, set);
-                    changed = 1;
-                }
-            }
-        }
-        if (changed == 0) {
-            stylesheet.push(set);
-        }
-    }
-}
-
-// ================================= Adding styles to Elements for displaying =================================
 
 const add_style = () => {
     let all_style = "";
@@ -218,7 +354,6 @@ const add_style = () => {
             all_style += this_style;
         }
     });
-    stylesheet_adder(sel(1, "[data-active='true']").getAttribute("data-id"), all_style);
     sel(1, "[data-active='true']").style.cssText = all_style;
 }
 
@@ -234,6 +369,9 @@ const open_edit_panel = () => {
 
     // ===================== Preparing the Content tab ====================
     sel(1, "[data-name='elemenet_name']").value = active_elem.getAttribute("data-name");
+    sel(1, "[data-name='elemenet_class']").value = active_elem.getAttribute("class");
+    sel(1, "[data-name='elemenet_id']").value = active_elem.getAttribute("id");
+
     if (active_elem.tagName == "P") {
         sel(1, "[data-name='text_content']").value = active_elem.innerText;
     }
@@ -265,7 +403,16 @@ sel(1, ".edit_opener").addEventListener("click", () => {
         sel(1, ".edit_panel").classList.add("close_edit");
     }
 });
-sel(2, "[data-type]").forEach((item) => {
+edit_panel.querySelectorAll("[data-heading]").forEach((item) => {
+    item.addEventListener("click", () => {
+        edit_panel.querySelectorAll("[data-heading]").forEach((item)=>item.classList.remove("active"));
+        item.classList.add("active");
+        edit_panel.querySelectorAll("[data-content]").forEach((item) => item.classList.add("display_none"));
+        let content_temp = "[data-content='" + item.getAttribute("data-heading") + "']";
+        edit_panel.querySelector(content_temp).classList.remove("display_none");
+    })
+})
+sel(2, "[data-input-type]").forEach((item) => {
     item.addEventListener("click", () => {
         if (item.getAttribute("data-role" == "switch")) {
             if (item.parentElement.parentElement.getAttribute("data-unit") == "px") {
@@ -296,7 +443,7 @@ const delete_unnecessary = () => {
 }
 
 let text_content = content_panel.querySelector("[data-name='text_content']");
-text_content.addEventListener("change", () => {
+text_content.addEventListener("keyup", () => {
     sel(1, "[data-active='true']").innerText = text_content.value;
 });
 text_content.addEventListener("blur", () => {
@@ -304,9 +451,27 @@ text_content.addEventListener("blur", () => {
 });
 
 let element_name = content_panel.querySelector("[data-name='elemenet_name']");
+element_name.addEventListener("keyup", () => {
+    sel(1, "[data-active='true']").setAttribute("data-name", element_name.value);
+    bread_builder(sel(1, "[data-active='true']"));
+});
 element_name.addEventListener("blur", () => {
     sel(1, "[data-active='true']").setAttribute("data-name", element_name.value);
     bread_builder(sel(1, "[data-active='true']"));
+});
+let elemenet_id = content_panel.querySelector("[data-name='elemenet_id']");
+elemenet_id.addEventListener("keyup", () => {
+    sel(1, "[data-active='true']").setAttribute("id", elemenet_id.value);
+});
+elemenet_id.addEventListener("blur", () => {
+    sel(1, "[data-active='true']").setAttribute("id", elemenet_id.value);
+});
+let elemenet_class = content_panel.querySelector("[data-name='elemenet_class']");
+elemenet_class.addEventListener("keyup", () => {
+    sel(1, "[data-active='true']").classList = elemenet_class.value;
+});
+elemenet_class.addEventListener("blur", () => {
+    sel(1, "[data-active='true']").classList = elemenet_class.value;
 });
 
 
@@ -318,3 +483,90 @@ element_name.addEventListener("blur", () => {
 
 
 listener()
+
+
+
+// ================================================================
+// I am section
+//  -- I go to page
+// I am element
+    // Page empty
+        // -- Make row-column
+        // -- Make section
+    // else
+        // Active elem is container
+            // -- I place
+        // Active elem is section
+            // -- Make my row-column
+            // loop
+        // Active elem is element
+            // Parent is container
+                // -- I place in parent
+            // Parent is section
+                // -- Make row-column
+                // loop
+// I am container
+    // Page empty
+        // Make section
+    // else
+        // Active elem is element
+            // -- Place me in parent
+        // else
+            // -- I place
+
+// ================================================================
+// Page empty
+    // I am section
+        // -- I place in page
+    // I am container
+        // -- Make section
+    // else
+        // -- Make row-column
+        // -- Make section
+// else
+    // I am section
+        // -- I place in page
+    // I am container
+        // Active elem is element
+            // -- I place in parent
+        // else
+            // -- I place
+    // I am element
+        // Active elem is element
+            // Parent is section
+                // -- Make row-column
+                // loop
+            // Parent is container
+                // -- I place in parent
+        // Active elem is container
+            // -- I place
+        // else
+            // -- Make row-column
+            // loop
+
+// ================================================================
+// I am section
+    // -- I place in page
+// else
+    // Page empty
+        // I am element
+            // -- Make row-column
+        // Make section
+    // else
+        // Active elem is element
+            // Parent is section
+                // I am element
+                    // -- Make row-column
+                    // loop
+                // else
+                    // -- I place in parent
+            // Parent is container
+                // -- I place in parent
+        // Active elem is container
+            // -- I place
+        // Active elem is section
+            // I am container
+                // -- I place
+            // else
+                // -- Make row-column
+                // loop
